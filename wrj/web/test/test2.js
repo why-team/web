@@ -2,9 +2,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mysql = require('mysql');
 // 创建 Express 应用
 const app = express();
 const port = 3000;
+//创建连接对象
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '13974682azp;',
+//     database: 'mysql',
+// });
+//连接到数据库
+// connection.connect((error) => {
+//     if(error){
+//         console.error('error:', error);
+//     }else{
+//         console.log('sus');
+//     }
+// })
 
 // 使用 body-parser 中间件解析 JSON 请求体
 app.use(bodyParser.json());
