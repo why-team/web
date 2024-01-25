@@ -20,10 +20,11 @@
         const dataToSend = { query };
 
         // 发送 POST 请求到后端
-        fetch('http://localhost:3000/api/process-data', {
+        fetch('http://49.232.169.105:8080/api/search', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin:*"
             },
             body: JSON.stringify(dataToSend)
         })

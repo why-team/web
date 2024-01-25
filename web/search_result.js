@@ -1,3 +1,4 @@
+
 function sendData() {
 
     const query = document.getElementById('query').value;
@@ -5,20 +6,21 @@ function sendData() {
     // 构建要发送给后端的数据对象
     const dataToSend = { query };
 
+
     // 发送 POST 请求到后端
-    fetch('http://localhost:3000/api/process-data', {
+    fetch('http://49.232.169.105:8080/api/search', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend)
     })
         .then(response => response.json())
         .then(data => {
             // 处理后端返回的数据
-            const message = data.message;
-            const total_number = message.overall.total_number;
-            const datalist = message.article;
+
+            const total_number = data.count;
+            const datalist = data.articles;
 
             createHtmlElement(total_number, datalist);
             // createPagination(3);
@@ -42,8 +44,10 @@ function createHtmlElement(total_number, data_list)
         var li = document.createElement("li");
         //生成h3
         var a = document.createElement("a");
-        a.setAttribute("href", data_list[i].DOI);
+        a.setAttribute("href", data_list[i].article_url);
+
         a.appendChild(document.createTextNode(data_list[i].title));
+
         var paper_title = document.createElement("h3");
 
         paper_title.appendChild(a);
@@ -53,21 +57,37 @@ function createHtmlElement(total_number, data_list)
         //生成p1
         var p1 = document.createElement("p");
         p1.setAttribute("class", "author");
-        p1.innerText = data_list[i].author;
+        p1.innerText = data_list[i].authors;
 
         li.appendChild(p1);
         //生成p2
         var p2 = document.createElement("p");
-        p2.setAttribute("class", "source");
-        p2.innerText = data_list[i].source;
+        p2.setAttribute("class", "references");
+        p2.innerText = data_list[i].references;
 
         li.appendChild(p2);
         // 生成p3
         var p3 = document.createElement("p");
         p3.setAttribute("class", "abstract");
-        p3.innerText = data_list[i].abstract;
+        p3.innerText = data_list[i].abstract_text;
 
         li.appendChild(p3);
+
+
+
+        //生成p4
+        var p4 = document.createElement("p");
+        p4.setAttribute("class", "published");
+        p4.innerText = data_list[i].published;
+        li.appendChild(p4);
+
+
+        //生成p5
+
+        var p5 = document.createElement('p');
+        p5.setAttribute("class", "doi");
+        p5.innerText = data_list[i].doi;
+        li.appendChild(p5)
 
         showplate.appendChild(li);
     }
