@@ -24,16 +24,14 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin:*"
             },
             body: JSON.stringify(dataToSend)
         })
             .then(response => response.json())
             .then(data => {
                 // 处理后端返回的数据
-                const message = data.message;
-                const total_number = message.overall.total_number;
-                const datalist = message.article;
+                const total_number = data.count;
+                const datalist = data.articles;
 
                 createHtmlElement(total_number, datalist);
                 // createPagination(3);

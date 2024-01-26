@@ -44,7 +44,7 @@ function createHtmlElement(total_number, data_list)
         var li = document.createElement("li");
         //生成h3
         var a = document.createElement("a");
-        a.setAttribute("href", data_list[i].article_url);
+        a.setAttribute("href", data_list[i].url);
 
         a.appendChild(document.createTextNode(data_list[i].title));
 
@@ -54,40 +54,42 @@ function createHtmlElement(total_number, data_list)
         paper_title.setAttribute("class", "paper-title");
 
         li.appendChild(paper_title);
-        //生成p1
+        //生成date
+        var date = document.createElement("p");
+        date.setAttribute("class", "date");
+        date.innerText = data_list[i].published_date;
+        
+        li.appendChild(date);
+        //生成year
+        var year = document.createElement('p');
+        year.setAttribute("class", "year");
+        year.innerText = data_list[i].published_year;
+        
+        li.appendChild(year);
+        //生成author
         var p1 = document.createElement("p");
         p1.setAttribute("class", "author");
         p1.innerText = data_list[i].authors;
 
         li.appendChild(p1);
-        //生成p2
-        var p2 = document.createElement("p");
-        p2.setAttribute("class", "references");
-        p2.innerText = data_list[i].references;
-
-        li.appendChild(p2);
-        // 生成p3
-        var p3 = document.createElement("p");
-        p3.setAttribute("class", "abstract");
-        p3.innerText = data_list[i].abstract_text;
-
-        li.appendChild(p3);
-
-
-
-        //生成p4
-        var p4 = document.createElement("p");
-        p4.setAttribute("class", "published");
-        p4.innerText = data_list[i].published;
-        li.appendChild(p4);
-
-
-        //生成p5
+        
+        //生成doi
 
         var p5 = document.createElement('p');
         p5.setAttribute("class", "doi");
         p5.innerText = data_list[i].doi;
         li.appendChild(p5)
+        
+        // 生成abstract
+        var p3 = document.createElement("p");
+        p3.setAttribute("class", "abstract");
+        p3.innerText = data_list[i].abstract;
+
+        li.appendChild(p3);
+
+
+
+        
 
         showplate.appendChild(li);
     }
