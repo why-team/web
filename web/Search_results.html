@@ -17,23 +17,27 @@
     {
 
     }else{
+        const query = document.getElementById('query').value;
+
+        // 构建要发送给后端的数据对象
         const dataToSend = { query };
 
+
         // 发送 POST 请求到后端
-        fetch('http://49.232.169.105:8080/api/search', {
+        fetch('http://localhost:3000/api/process-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin:*"
+
             },
             body: JSON.stringify(dataToSend)
         })
             .then(response => response.json())
             .then(data => {
                 // 处理后端返回的数据
-                const message = data.message;
-                const total_number = message.overall.total_number;
-                const datalist = message.article;
+
+                const total_number = data.count;
+                const datalist = data.articles;
 
                 createHtmlElement(total_number, datalist);
                 // createPagination(3);
