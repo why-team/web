@@ -21,7 +21,7 @@ function sendData() {
             const datalist = message.article;
 
             createHtmlElement(total_number, datalist);
-            createPagination(3);
+            // createPagination(3);
 
         })
         .catch(error => {
@@ -73,27 +73,41 @@ function createHtmlElement(total_number, data_list)
     }
 
     var con = document.getElementById("display");
+    con.innerHTML = '';
     con.appendChild(showplate)
     console.log(showplate);
 
 }
 
-function createPagination(num_of_createPagination)
-{
-    var pagination = document.getElementById("pagination");
-    var front_page = document.createElement("a");
-    front_page.setAttribute("href", "#");
-    front_page.innerText = "front_page";
-    pagination.appendChild(front_page);
-    for (var i = 0; i < num_of_createPagination;i++)
-    {
-        var page = document.createElement("a");
-        page.setAttribute("href", "#");
-        page.innerText = ` ${i + 1} `;
-        pagination.appendChild(page);
-    }
-    var after_page = document.createElement("a");
-    after_page.setAttribute("href", "#");
-    after_page.innerText = "after_page";
-    pagination.appendChild(after_page);
-}
+// function createPagination(num_of_createPagination)
+// {
+//     var pagination = document.getElementById("pagination");
+//     var front_page = document.createElement("a");
+//     front_page.setAttribute("href", "#");
+//     front_page.innerText = "front_page";
+//     pagination.appendChild(front_page);
+//     for (var i = 0; i < num_of_createPagination;i++)
+//     {
+//         var page = document.createElement("a");
+//         page.setAttribute("href", "#");
+//         page.innerText = ` ${i + 1} `;
+//         pagination.appendChild(page);
+//     }
+//     var after_page = document.createElement("a");
+//     after_page.setAttribute("href", "#");
+//     after_page.innerText = "after_page";
+//     pagination.appendChild(after_page);
+// }
+
+const button = document.getElementById('search_button');
+
+let lastClickTime = 0;
+
+button.addEventListener('click', () => {
+    button.disabled = true;
+    setTimeout(() => {
+        button.disabled = false;
+    }, 2000);
+
+    console.log('Clicked');
+})
