@@ -34,17 +34,18 @@ function sendData() {
 function createHtmlElement(total_number, data_list)
 {
     //共找到 10 篇相关论文：
-    document.getElementById('search_num').innerText = `There are ${total_number} articles in total.`
+    document.getElementById('search_num').innerText = `${total_number} articles`
     // 生成列表和页面
     var showplate = document.createElement("ul");
     showplate.setAttribute("id", "show_plate");
+    showplate.setAttribute("class", "papers_information_ul")
     for (let i = 0; i < total_number; i++)
     {
         //生成列表
         var li = document.createElement("li");
         //生成h3
         var a = document.createElement("a");
-        a.setAttribute("href", data_list[i].article_url);
+        a.setAttribute("href", data_list[i].url);
 
         a.appendChild(document.createTextNode(data_list[i].title));
 
@@ -54,40 +55,37 @@ function createHtmlElement(total_number, data_list)
         paper_title.setAttribute("class", "paper-title");
 
         li.appendChild(paper_title);
-        //生成p1
+
+        //生成date和year
+        var date = document.createElement("p");
+        date.setAttribute("class", "date_year");
+        date.innerText = data_list[i].published_date + ", " + data_list[i].published_year;
+        
+        li.appendChild(date);
+
+        //生成author
         var p1 = document.createElement("p");
         p1.setAttribute("class", "author");
         p1.innerText = data_list[i].authors;
 
         li.appendChild(p1);
-        //生成p2
-        var p2 = document.createElement("p");
-        p2.setAttribute("class", "references");
-        p2.innerText = data_list[i].references;
-
-        li.appendChild(p2);
-        // 生成p3
+        
+        //生成doi
+        var p5 = document.createElement('p');
+        p5.setAttribute("class", "doi");
+        p5.innerText = data_list[i].doi;
+        li.appendChild(p5)
+        
+        // 生成abstract
         var p3 = document.createElement("p");
         p3.setAttribute("class", "abstract");
-        p3.innerText = data_list[i].abstract_text;
+        p3.innerText = data_list[i].abstract;
 
         li.appendChild(p3);
 
 
 
-        //生成p4
-        var p4 = document.createElement("p");
-        p4.setAttribute("class", "published");
-        p4.innerText = data_list[i].published;
-        li.appendChild(p4);
-
-
-        //生成p5
-
-        var p5 = document.createElement('p');
-        p5.setAttribute("class", "doi");
-        p5.innerText = data_list[i].doi;
-        li.appendChild(p5)
+        
 
         showplate.appendChild(li);
     }
