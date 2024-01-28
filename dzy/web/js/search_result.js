@@ -2,11 +2,15 @@
 function sendData() {
 
     const query = document.getElementById('query').value;
-
+    const token = localStorage.getItem('token');
+    const paper_results = document.getElementById("paper_results")
     // 构建要发送给后端的数据对象
-    const dataToSend = { query };
+    const dataToSend = {
+        "query": query,
+        "token": token,
+    };
 
-
+    paper_results.innerHTML = "\"" + query + "\""
     // 发送 POST 请求到后端
     fetch('http://49.232.169.105:8080/api/search', {
         method: 'POST',
@@ -21,6 +25,9 @@ function sendData() {
 
             const total_number = data.count;
             const datalist = data.articles;
+            const token = data.token;
+
+            localStorage.setItem("token", token);
 
             createHtmlElement(total_number, datalist);
             // createPagination(3);
