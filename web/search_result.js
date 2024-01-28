@@ -145,3 +145,5 @@ function transmit(){
     console.log(queryInput);
     window.location.href = `Search_results.html?query=${encodeURIComponent(queryInput)}`;
 }
+
+
