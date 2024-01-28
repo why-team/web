@@ -23,14 +23,11 @@ function login() {
             const msg = data.msg;
             const token = data.token;
             localStorage.setItem('token', token);
-            if (code === 100){alert(msg);}
-            if (code === 101){alert(msg);}
-            if (code === 102){alert(msg);}
-            if (code === 103){alert(msg);}
-            if (code === 104){alert(msg);}
-            if (code === 105){alert(msg);}
-            if (code === 106){alert(msg);}
-            if (code === 107){alert(msg);}
+            if (code === 100)
+            {
+                window.location.href = './index.html';
+            }
+            alert(msg);
         })
         .catch(error => console.log('error', error)
         );
@@ -47,9 +44,9 @@ function register() {
     formdata_register.append("password", password)
     // console.log(formdata_register);
 
-    for (const entry of formdata_register.entries()) {
-        console.log(entry[0], entry[1]);
-    }
+    // for (const entry of formdata_register.entries()) {
+    //     console.log(entry[0], entry[1]);
+    // }
 
     let requestOptions = {
         method: 'POST',
@@ -69,7 +66,13 @@ function register() {
             const token = data.token;
             // console.log(code);
             localStorage.setItem('token', token);
+
             alert(msg);
+
+            if (code === 101)
+            {
+                window.location.href = './index.html';
+            }
         })
         .catch(error => console.log('error', error)
         );
