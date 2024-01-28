@@ -2,10 +2,12 @@
 function sendData() {
 
     const query = document.getElementById('query').value;
-
+    const token = localStorage.getItem('token');
     // 构建要发送给后端的数据对象
-    const dataToSend = { query };
-
+    const dataToSend = {
+        "query": query,
+        "token": token,
+    };
 
     // 发送 POST 请求到后端
     fetch('http://49.232.169.105:8080/api/search', {
@@ -21,6 +23,9 @@ function sendData() {
 
             const total_number = data.count;
             const datalist = data.articles;
+            const token = data.token;
+
+            localStorage.setItem("token", token);
 
             createHtmlElement(total_number, datalist);
             // createPagination(3);
@@ -30,6 +35,7 @@ function sendData() {
             console.error('Error:', error);
         });
 }
+
 
 function createHtmlElement(total_number, data_list)
 {
@@ -139,3 +145,5 @@ function transmit(){
     console.log(queryInput);
     window.location.href = `Search_results.html?query=${encodeURIComponent(queryInput)}`;
 }
+
+
