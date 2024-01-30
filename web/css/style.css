@@ -1338,7 +1338,7 @@
 }
 /*论文信息区域*/
 .papers_information_ul{
-    margin-bottom: -200px;
+    margin-bottom:30px;
     list-style-type: none;
 }
 
@@ -1360,6 +1360,7 @@
     text-align: center;
     /*margin-bottom: 100px;*/
     text-decoration: none;
+    margin-top: 100px;
 }
 
 .paper-title:hover{
@@ -1371,10 +1372,12 @@
 
 .date_year{
     text-align: center;
+    color: #13653f;
 }
 
 .author{
     text-align: center;
+    color: #13653f;
 }
 
 .doi{

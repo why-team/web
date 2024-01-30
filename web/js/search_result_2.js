@@ -43,10 +43,13 @@ function createHtmlElement(total_number, data_list)
     // 生成列表和页面
     var showplate = document.createElement("ul");
     showplate.setAttribute("id", "show_plate");
-    showplate.setAttribute("class", "papers_information_ul");
+    showplate.setAttribute("class", "papers_information_ul_v1");
     var all_years = [];
     for (let i = 0; i < total_number; i++)
     {
+        var showplate_v2 = document.createElement("ul");
+        showplate_v2.setAttribute("id", "show_plate_v2");
+        showplate_v2.setAttribute("class", "papers_information_ul");
         //生成列表
         var li = document.createElement("li");
         //生成h3
@@ -90,15 +93,24 @@ function createHtmlElement(total_number, data_list)
 
         li.appendChild(p3);
 
-        showplate.appendChild(li);
+        showplate_v2.appendChild(li);
+        showplate.appendChild(showplate_v2)
     }
     console.log(all_years);
+    all_years.sort()
+    let all_years_sort = [];
+    for (let i = 0;i < all_years.length; i++){
+        if (all_years[i] !== all_years[i-1]){
+            all_years_sort.push(all_years[i]);
+        }
+    }
+
     var con = document.getElementById("display");
     con.innerHTML = '';
     con.appendChild(showplate)
     console.log(showplate);
     var All_Years = document.getElementById("specific_years")
-    All_Years.innerText = all_years
+    All_Years.innerText = all_years_sort
 
 }
 
