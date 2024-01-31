@@ -11,7 +11,7 @@ api_favorite = Blueprint('search_api', __name__, template_folder='templates')
 @api_favorite.route('/api/favorite/add', methods=['POST'])
 def add_favorite():
     json = request.get_json()
-    user_id = user.get_user_id(token=json['toekn'])
+    user_id = user.get_user_id(token=json['token'])
     try:
         article_id = json['article_id']
     except KeyError:
@@ -19,14 +19,14 @@ def add_favorite():
             'errno': 101,
             'message': 'Invalid json: Key error'
         }
-    
+
     same = Favorite.query.filter_by(article_id=article_id).count()
     if same > 0:
         return {
             'errno': 102,
             'message': 'Article already in favorites'
         }
-    
+
     try:
         favorite = Favorite(
             user_id=user_id,

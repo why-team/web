@@ -22,7 +22,7 @@ def getSearchResult():
             'code': 101,
             'message': 'Invalid request. Check your JSON format.'
         }
-    
+
     validate_result = user.validate_token(token)
     if 'token' not in validate_result:
         return {
@@ -31,7 +31,6 @@ def getSearchResult():
         }
 
     tokens = preprocessor.preprocess(user_query)
-
     scores = bm25model.get_scores(tokens)
     # print(scores.index(max(scores)), max(scores), scores[1])
     article_ids = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:50]
