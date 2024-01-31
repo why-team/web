@@ -3,11 +3,6 @@ import uuid
 import hashlib
 from datetime import datetime, timedelta
 
-# from typing import List
-# import jieba
-# from gensim.summarization import bm25
-# import heapq
-
 class User():
     def __init__(self, cursor: Cursor):
         self.cursor = cursor
@@ -99,14 +94,6 @@ class User():
                 }
 
     def validate_token(self, token: str):
-        # TODO: 以下是调试代码，测试结束后记得删掉
-        return {
-            'code': 111,
-            'msg': 'valid success',
-            'token': token,
-        }
-        # 调试代码结束
-    
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
         self.cursor.execute(sql)
         result = self.cursor.fetchall()

@@ -1,5 +1,4 @@
 from flask import request, Blueprint
-import heapq
 
 from models.article import Article
 from components.model import bm25model

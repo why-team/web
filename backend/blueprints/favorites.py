@@ -2,16 +2,16 @@ from flask import request, Blueprint
 
 from components.database import db
 from models.favorite import Favorite
+from utils.user import User
 
-def get_user_id():
-    raise NotImplementedError
+user = User()
 
 api_favorite = Blueprint('search_api', __name__, template_folder='templates')
 
 @api_favorite.route('/api/favorite/add', methods=['POST'])
 def add_favorite():
     json = request.get_json()
-    user_id = get_user_id(token=json['toekn'])
+    user_id = user.get_user_id(token=json['toekn'])
     try:
         article_id = json['article_id']
     except KeyError:
@@ -52,6 +52,7 @@ def remove_favorite():
     json = request.get_json()
     try:
         article_id = json['article_id']
+        user_id = user.get_user_id(token=json['token'])
     except KeyError:
         return {
             'errno': 101,
@@ -59,7 +60,7 @@ def remove_favorite():
         }
 
     try:
-        favorite = Favorite.query.filter_by(article_id=article_id)
+        favorite = Favorite.query.filter_by(article_id=article_id, user_id=user_id)
         if favorite.count() == 0:
             return {
                 'errno': 102,
