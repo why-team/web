@@ -3,11 +3,6 @@ import uuid
 import hashlib
 from datetime import datetime, timedelta
 
-# from typing import List
-# import jieba
-# from gensim.summarization import bm25
-# import heapq
-
 class User():
     def __init__(self, cursor: Cursor):
         self.cursor = cursor
@@ -31,7 +26,7 @@ class User():
     def match_username_password(self, username: str, password: str):
         locked_username = self.hash_encode(username)
         locked_password = self.hash_encode(password)
-        sql = "select * from users where username='{}' and password='{}';".format(locked_username,locked_password)
+        sql = "select * from users where username='{}' and password='{}';".format(locked_username, locked_password)
         # print(sql)
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
@@ -43,7 +38,7 @@ class User():
     def add_user(self, username: str, password: str) -> int:
         locked_username = self.hash_encode(username)
         locked_password = self.hash_encode(password)
-        sql = "insert users(username, password) values('{}', '{}');".format(locked_username,locked_password)
+        sql = "insert users(username, password) values('{}', '{}');".format(locked_username, locked_password)
         self.cursor.execute(sql)
         sql = f"select id from users where username='{locked_username}'"
         self.cursor.execute(sql)
@@ -59,16 +54,16 @@ class User():
         sql = "insert tokens(token, userid, expires_at) values('{}', '{}', '{}');".format(token, userid, expire_time_str)
         self.cursor.execute(sql)
         return token
-        
+
     def register(self, username: str, password: str):
         username_have_been_used = self.check_username_unique(username=username)
         if username_have_been_used:
             return {
-                'code':102,
+                'code': 102,
                 'msg':'username already used',
             }
         else:
-            userid = self.add_user(username=username,password=password)
+            userid = self.add_user(username=username, password=password)
             token = self.generate_token(userid=userid)
             return {
                 'code':101,
@@ -77,7 +72,7 @@ class User():
             }
 
     def login(self, username: str, password: str):
-        matched = self.match_username_password(username=username,password=password)
+        matched = self.match_username_password(username=username, password=password)
         if matched:
             userid = self.get_user_id(username=username)
             token = self.generate_token(userid=userid)
@@ -99,14 +94,6 @@ class User():
                 }
 
     def validate_token(self, token: str):
-        # TODO: 以下是调试代码，测试结束后记得删掉
-        return {
-            'code': 111,
-            'msg': 'valid success',
-            'token': token,
-        }
-        # 调试代码结束
-    
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
@@ -133,11 +120,11 @@ class User():
         }
         
     def change_password(self, username: str, password: str, new_password: str):
-        matched = self.match_username_password(username=username,password=password)
+        matched = self.match_username_password(username=username, password=password)
         if matched:
             locked_username = self.hash_encode(username)
             locked_new_password = self.hash_encode(new_password)
-            sql = "update users set password = '{}' where username ='{}';".format(locked_new_password,locked_username)
+            sql = "update users set password = '{}' where username ='{}';".format(locked_new_password, locked_username)
             self.cursor.execute(sql)
             return {
                 'code':113,

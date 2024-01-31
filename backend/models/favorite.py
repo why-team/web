@@ -1,6 +1,7 @@
 from components.database import db
 
 class Favorite(db.Model):
+    __tablename__ = 'Favorites'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     article_id = db.Column(db.Integer, nullable=False)

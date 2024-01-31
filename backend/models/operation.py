@@ -1,9 +1,13 @@
 from datetime import datetime
 from flask import request
+
 from app import db
-from utils import get_user_id
+from utils.user import User
+
+user = User()
 
 class Operation(db.Model):
+    __tablename__ = 'Operations'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     op_type = db.Column(db.Integer, nullable=False)
     op_type2 = db.Column(db.Integer, nullable=False)
@@ -21,7 +25,7 @@ class Operation(db.Model):
                  user_id: int,
                  ip: str,
                  user_agent: str,
-                 op_time: int = datetime.utcnow(), 
+                 op_time: int = datetime.utcnow(),
                  article_id: int = None,
                  dest_user: int = None,
                  details: str = None):
@@ -47,7 +51,7 @@ def add_operation(token: str,
         raise ValueError('Param "details" is required.')
     elif op_type == 2 and (op_type2 == 0 or op_type2 == 1) and article_id == None:
         raise ValueError('Param "article_id" is required.')
-    user_id = get_user_id(token)
+    user_id = user.get_user_id(token=token)
     ip = request.remote_addr
     user_agent = request.user_agent.string
     operation = Operation(op_type=op_type,

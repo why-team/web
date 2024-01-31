@@ -11,7 +11,7 @@ conn = pymysql.connect(
 
 cursor = conn.cursor()
 
-data = pd.read_csv('..\data.tsv', sep='\t')
+data = pd.read_csv('..\data\data.tsv', sep='\t')
 
 for index, row in data.iterrows():
     id = index

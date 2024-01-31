@@ -1,17 +1,16 @@
 from flask import Flask
-from flask_cors import CORS
 
 import sys
 sys.path.append("/data/backend2")
 
-from components.database import db
-
 app = Flask(__name__)
+
+from components.database import db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:admin@localhost/testtest'
 db.init_app(app)
-CORS(app, supports_credentials=True)
 
-# bm25model = init.model.init(app)
+from flask_cors import CORS
+CORS(app, supports_credentials=True)
 
 from blueprints.favorites import api_favorite
 from blueprints.search import api_search
