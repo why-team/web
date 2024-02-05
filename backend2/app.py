@@ -2,7 +2,7 @@ from flask import Flask
 
 import sys
 
-sys.path.append("/data")
+sys.path.append("/data/backend2")
 
 app = Flask(__name__)
 

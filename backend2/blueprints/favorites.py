@@ -1,8 +1,7 @@
 from flask import request, Blueprint
-import sys
-from backend2.components.database import db2 as db
-from backend2.models.favorite import Favorite
-from backend2.utils.user import User
+from components.database import db2 as db
+from models.favorite import Favorite
+from utils.user import User
 
 
 user = User(cursor=db.cursor(), conn=db)
@@ -48,6 +47,7 @@ def add_favorite():
         'errno': 100,
         'message': 'Success'
     }
+
 
 @api_favorite.route('/api/favorite/remove', methods=['POST'])
 def remove_favorite():
