@@ -45,6 +45,7 @@ function createHtmlElement(total_number, data_list)
     showplate.setAttribute("id", "show_plate");
     showplate.setAttribute("class", "papers_information_ul_v1");
     var all_years = [];
+    var all_words = [];
     for (let i = 0; i < total_number; i++)
     {
         var showplate_v2 = document.createElement("ul");
@@ -57,6 +58,7 @@ function createHtmlElement(total_number, data_list)
         a.setAttribute("href", data_list[i].url);
 
         a.appendChild(document.createTextNode(i+1 + ". " + data_list[i].title));
+        all_words.push(data_list[i].title);
 
         var paper_title = document.createElement("h3");
 
@@ -84,7 +86,7 @@ function createHtmlElement(total_number, data_list)
         var p5 = document.createElement('p');
         p5.setAttribute("class", "doi");
         p5.innerText = data_list[i].doi;
-        li.appendChild(p5)
+        li.appendChild(p5);
 
         // 生成abstract
         var p3 = document.createElement("p");
@@ -95,6 +97,7 @@ function createHtmlElement(total_number, data_list)
 
         showplate_v2.appendChild(li);
         showplate.appendChild(showplate_v2)
+
     }
     console.log(all_years);
     all_years.sort()
@@ -104,13 +107,65 @@ function createHtmlElement(total_number, data_list)
             all_years_sort.push(all_years[i]);
         }
     }
+    // 统计词频
+    const map = {};
+    for (let i=0; i<all_words.length; i++)
+    {
+        const str = all_words[i];
+        const array = str.split(" ");
+        for (let j=0; j<array.length; j++)
+        {
+            const strWord = array[j];
+            if (!map[strWord])
+            {
+                map[strWord] = 1;
+            }
+            else
+            {
+                map[strWord]++;
+            }
+        }
+    }
 
+    // 将字典对象转换为包含键值对的数组，并按值进行排序
+    var sortedArray = Object.keys(map).sort(function(a, b) {
+        return map[b] - map[a];
+    }).map(function(key) {
+        return { key: key, value: map[key] };
+    });
+
+    // 创建一个新的有序字典对象
+    var sortedDict = {};
+    sortedArray.forEach(function(item) {
+        sortedDict[item.key] = item.value;
+    });
+
+    // console.log(sortedDict); // 输出按值排序后的字典对象
+
+    // 检查无效字符并删去
+    var deleteList = ["for", "of", "and", "in", "the", "A", "to", "a", "on", "an"]
+    let exists;
+    for (const key_2 in sortedDict) {
+        exists = deleteList.includes(key_2)
+        if (exists) {
+            sortedDict.delete(key_2)
+        }
+    }
+
+    // 将词频插入网页中
     var con = document.getElementById("display");
     con.innerHTML = '';
     con.appendChild(showplate)
     console.log(showplate);
     var All_Years = document.getElementById("specific_years")
     All_Years.innerText = all_years_sort
+    var words_fre = document.getElementById("specific_words")
+    for (var key in sortedDict){
+        var listItem = document.createElement("li");
+        listItem.textContent = key + "——————————————" + sortedDict[key];
+        words_fre.appendChild(listItem);
+    }
+
 
 }
 
