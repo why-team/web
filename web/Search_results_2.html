@@ -151,10 +151,12 @@
                 const total_number = data.count;
                 const datalist = data.articles;
                 const token = data.token;
+                const nodedata = data.graphs;
                 console.log(data)
 
                 localStorage.setItem("token", token)
                 createHtmlElement(total_number, datalist);
+                createScatterPlot(nodedata,datalist);
                 // createPagination(3);
 
             })
@@ -173,7 +175,7 @@
 
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
         <h5 class="section-title px-3 num_papers animate__animated animate__bounceIn animate__delay-3s">correlation diagram</h5>
-        <div id="echarts" class="section-title animate__animated animate__bounceIn animate__delay-3s" style="width: 600px;height:400px;"></div>
+        <div id="echarts" class="animate__animated animate__bounceIn animate__delay-3s scatterPlot2" style="width: 1200px;height:800px;"></div>
     </div>
 
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
@@ -202,6 +204,5 @@
     </div>
 </div>
 <script src="js/search_result_2.js"></script>
-<script src="js/graph.js"></script>
 </body>
 </html>

@@ -1380,6 +1380,10 @@
     font-size: 30px;
 }
 
+.scatterPlot2{
+    margin-left: -16%;
+}
+
 .paper-title{
     text-align: center;
     /*margin-bottom: 100px;*/

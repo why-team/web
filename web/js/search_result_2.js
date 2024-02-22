@@ -24,10 +24,12 @@ function sendData() {
             const total_number = data.count;
             const datalist = data.articles;
             const token = data.token;
+            const nodedata = data.graphs
 
             localStorage.setItem("token", token);
 
             createHtmlElement(total_number, datalist);
+            createScatterPlot(nodedata, datalist);
             // createPagination(3);
             // console.log(datalist);
             // console.log(data);
@@ -168,6 +170,149 @@ function createHtmlElement(total_number, data_list)
     }
 
 
+}
+
+function createScatterPlot(nodes_data, article_data) {
+    const num_nodes = nodes_data.node_count;
+    const vertices = nodes_data.vertices
+    var nodes_coord_list = [];
+    var nodes_line_list = [];
+
+
+    for (let i_node=0; i_node<num_nodes; i_node++) {
+        nodes_coord_list.push([nodes_data.nodes[i_node]["x"], nodes_data.nodes[i_node]["y"],
+            nodes_data.nodes[i_node]["type"], article_data[i_node].title]);
+    }
+
+    let id_1;
+    let id_2;
+    let x_1;
+    let y_1;
+    let x_2;
+    let y_2;
+    for (let i_weight = 0; i_weight < vertices.length; i_weight++) {
+        if (vertices[i_weight].weight > 0.5) {
+            id_1 = vertices[i_weight].node1;
+            id_2 = vertices[i_weight].node2;
+            for (let i_node_2 = 0; i_node_2 < num_nodes; i_node_2++) {
+                if (nodes_data.nodes[i_node_2].id === id_1) {
+                    x_1 = nodes_data.nodes[i_node_2]["x"];
+                    y_1 = nodes_data.nodes[i_node_2]["y"];
+                }
+                if (nodes_data.nodes[i_node_2].id === id_2) {
+                    x_2 = nodes_data.nodes[i_node_2]["x"];
+                    y_2 = nodes_data.nodes[i_node_2]["y"];
+                }
+            }
+            nodes_line_list.push([[x_1, y_1], [x_2, y_2], vertices[i_weight].weight]);
+        }
+    }
+
+    console.log(nodes_coord_list)
+    console.log(nodes_line_list)
+
+    const chartDom_nodes = document.getElementById('echarts');
+    const myChart_nodes = echarts.init(chartDom_nodes);
+    let option_nodes;
+
+    option_nodes = {
+        tooltip: {
+            trigger: 'item',
+            axisPointer: {
+                type: 'cross'
+            },
+            formatter: function (params) {
+                var htmlStr ='<div>';
+                if (params.seriesName === "Series1") {
+                    //自定义文本内容
+                    htmlStr += params.value[3];
+                    htmlStr += '</div>';
+                }
+                if (params.seriesName === "Series2") {
+                    //自定义文本内容
+                    htmlStr += params.value[2];
+                    htmlStr += '</div>';
+                }
+
+                return htmlStr;
+            }
+        },
+        xAxis: {},
+        yAxis: {},
+        series: [
+            {
+                name: "Series1",
+                symbolSize: 50,
+                encode: { tooltip: [0, 1] },
+                type: 'scatter',
+                data: nodes_coord_list,
+                itemStyle: {
+                    color: function(params) {
+                        if (params.seriesName === "Series1") {
+                            if (params.data[2] === 1) {
+                                return '#6a2c70'
+                            }
+                            if (params.data[2] === 2) {
+                                return "#b83b5e"
+                            }
+                            if (params.data[2] === 3) {
+                                return "#f08a5d"
+                            }
+                            if (params.data[2] === 4) {
+                                return "#f9ed69"
+                            }
+                            if (params.data[2] === 5) {
+                                return "#abedd8"
+                            }
+                            if (params.data[2] === 6) {
+                                return "#46cdcf"
+                            }
+                            if (params.data[2] === 7) {
+                                return "#3d84a8"
+                            }
+                            if (params.data[2] === 8) {
+                                return "#112d4e"
+                            }
+                        }
+                    }
+                },
+                datasetIndex: 1,
+
+            },
+            {
+                name: "Series2",
+                type: 'lines',
+                data: nodes_line_list,
+                coordinateSystem: 'cartesian2d', // 指定使用的坐标系类型
+                lineStyle: {
+                    color: '#333',
+                    width: 2
+                    // width: function(params) {
+                    //     // 根据数据不同返回不同的线宽值
+                    //     if (params.seriesName === "Series2") {
+                    //         if (params.value[2] > 0.5 && params.value[2] <= 0.6) {
+                    //             return 2
+                    //         }
+                    //         if (params.value[2] > 0.6 && params.value[2] <= 0.7) {
+                    //             return 3
+                    //         }
+                    //         if (params.value[2] > 0.7 && params.value[2] <= 0.8) {
+                    //             return 4
+                    //         }
+                    //         if (params.value[2] > 0.8 && params.value[2] <= 0.9) {
+                    //             return 5
+                    //         }
+                    //         if (params.value[2] > 0.9 && params.value[2] <= 1) {
+                    //             return 6
+                    //         }
+                    //     }
+                    // }
+                }
+            }
+        ]
+    };
+
+    option_nodes && myChart_nodes.setOption(option_nodes);
 }
 
 // function createPagination(num_of_createPagination)

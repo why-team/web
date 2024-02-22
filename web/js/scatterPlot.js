@@ -15,7 +15,7 @@ xhr.onreadystatechange = function() {
             var values = lines[i].split(",");
             data.push([values[0], values[1], values[2]]);
         }
-        console.log(data)
+        // console.log(data)
 
         // 使用Echarts生成图表
         // echarts.registerTransform(ecStat.transform.clustering);
