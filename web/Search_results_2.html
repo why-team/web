@@ -28,6 +28,8 @@
     <link href="css/style.css" rel="stylesheet">
 <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">-->
     <link rel="stylesheet" href="css/animate.css">
+
+    <script src="js/echarts.js"></script>
 </head>
 <body class="body">
 <!--<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">-->
@@ -129,9 +131,13 @@
 
     }else{
         const token = localStorage.getItem("token")
+        if (token === null){
+            window.location.href = "login_example.html";
+        }
         let dataToSend = new FormData();
         dataToSend.append("token", token)
         dataToSend.append("query", query)
+
 
         // 发送 POST 请求到后端
         fetch('http://49.232.169.105:8090/api/search', {
@@ -166,7 +172,7 @@
 
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
         <h5 class="section-title px-3 num_papers animate__animated animate__bounceIn animate__delay-3s">correlation diagram</h5>
-        <h1 id="" class="mb-0 animate__animated animate__bounceIn animate__delay-3s"></h1>
+        <div id="echarts" class="section-title animate__animated animate__bounceIn animate__delay-3s" style="width: 600px;height:400px;"></div>
     </div>
 
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
@@ -194,6 +200,7 @@
     <div class="pagination" id="pagination">
     </div>
 </div>
-</body>
 <script src="js/search_result_2.js"></script>
+<script src="js/graph.js"></script>
+</body>
 </html>

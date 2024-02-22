@@ -28,6 +28,7 @@
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <link rel="stylesheet" href="css/animate.css">
+        <script src="js/echarts.js"></script>
     </head>
 
     <body>
@@ -156,6 +157,13 @@
 
         <!-- Destination Start -->
         <div class="container-fluid destination py-5">
+            <div class="container py-5">
+                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                    <h5 class="section-title px-3">Paper Distribution</h5>
+                    <h1 class="mb-0">Scatter Plot</h1>
+                </div>
+                <div id="scatterPlot" style="width: 1200px;height:800px;" class="scatterPlot"> </div>
+            </div>
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
                     <h5 class="section-title px-3">Most Popular</h5>
@@ -476,6 +484,7 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+        <script src="js/scatterPlot.js"></script>
     </body>
 
 </html>

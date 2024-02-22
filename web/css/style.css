@@ -1252,6 +1252,12 @@
     height: 90px; /* 设置高度 */
 }
 
+/*修改散点图样式*/
+.scatterPlot{
+    margin-left: 4%;
+}
+
+
 /*修改示例文字大小*/
 ::placeholder {
     font-size: 18px;

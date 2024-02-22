@@ -8,6 +8,7 @@ function sendData() {
     let dataToSend = new FormData();
 
     dataToSend.append("query", query);
+    // dataToSend.append("token", token);
     dataToSend.append("token", token);
 
     paper_results.innerHTML = "\"" + query + "\""
@@ -148,7 +149,7 @@ function createHtmlElement(total_number, data_list)
     for (const key_2 in sortedDict) {
         exists = deleteList.includes(key_2)
         if (exists) {
-            sortedDict.delete(key_2)
+            delete sortedDict[key_2]; // 使用 delete 运算符删除对象属性
         }
     }
 
