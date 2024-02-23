@@ -11,7 +11,7 @@ def register():
     username = str(request.form.get("username")).replace(" ","")
     password = str(request.form.get("password")).replace(" ","")
     cursor = db.cursor()
-    user = User(cursor=cursor)
+    user = User(cursor=cursor, conn=db)
     res = user.register(username=username, password=password)
     if 'token' in res:
         db.commit()

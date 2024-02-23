@@ -1,5 +1,6 @@
 from components.database import db
 
+
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)

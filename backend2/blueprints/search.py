@@ -1,18 +1,22 @@
 from flask import request, Blueprint
+from sqlalchemy import and_
+import time
 
 from backend2.models.article import Article
 from backend2.components.model import bm25model
 from backend2.components.database import db2 as db
+from backend2.components.graph_data import graph_data
 from backend2.utils.user import User
 from backend2.utils.preprocessor import Preprocessor
 
 api_search = Blueprint('api_search', __name__, template_folder='templates')
 user = User(cursor=db.cursor(), conn=db)
 preprocessor = Preprocessor()
-
+    
 
 @api_search.route('/api/search', methods=['GET', 'POST'])
 def getSearchResult():
+    start_time = time.time()
     try:
         user_query = request.form.get('query')
         token = request.form.get('token')
@@ -35,30 +39,23 @@ def getSearchResult():
 
     tokens = preprocessor.preprocess(user_query)
     scores = bm25model.get_scores(tokens)
-    # print(scores.index(max(scores)), max(scores), scores[1])
-    article_ids = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:50]
+    article_ids = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:100]
+    article_ids = list(filter(lambda id: id <= 4420, article_ids))
+    article_ids = [article_id + 1 for article_id in article_ids]
 
     # print(article_ids)
-    articles = []
 
-    for article_id in article_ids:
-        sql_query = Article.query.filter(Article.id == article_id + 1)
-        queryed_articles = sql_query.all()
-        if len(queryed_articles) == 0:
-            continue
-        article = sql_query.all()[0]
-        if article.abstract == 'nan':
-            continue
-        articles.append(article)
-        if len(articles) == 20:
-            break
+    sql_query = Article.query.filter(and_(Article.id.in_(article_ids), Article.abstract != 'nan')).limit(20)
+    articles = sql_query.all()
 
     results = {
         'count': len(articles),
         'token': validate_result['token'],
-        'articles': []
+        'articles': [],
+        'graphs': {}
     }
 
+    queryed_article_ids = []
     for sql_article in articles:
         article = {
             'id': sql_article.id,
@@ -69,8 +66,20 @@ def getSearchResult():
             'published_year': sql_article.published_year,
             'published_date': sql_article.published_date,
             'abstract': sql_article.abstract,
-            'references': sql_article.reference_list()
+            # 'references': sql_article.reference_list()
         }
         results['articles'].append(article)
+        queryed_article_ids.append(sql_article.id)
+        
+    
+    nodes, vertices = graph_data.get_graph(queryed_article_ids)
+    results['graphs']['node_count'] = len(nodes)
+    results['graphs']['vertex_count'] = len(vertices)
+    results['graphs']['nodes'] = nodes
+    results['graphs']['vertices'] = vertices
+    
+    end_time = time.time()
+    results['time'] = end_time - start_time;
+    # results['log'] = log
 
     return results

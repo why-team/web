@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask import request
-from app import db
-from utils import get_user_id
+from backend2.app import db
+# from utils import get_user_id
+
 
 class Operation(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)

@@ -1,9 +1,9 @@
 from typing import Union, List
 from components.database import db
-
+print("success")
 
 class Article(db.Model):
-    __tablename__ = "Articles"
+    __tablename__="Articles"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(512), nullable=False)
     authors = db.Column(db.String(512), nullable=False)
@@ -39,6 +39,6 @@ class Article(db.Model):
         if isinstance(reference, str):
             reference = reference.split(sep='; ')
         self.reference = reference
-    
+
     def reference_list(self):
         return self.reference.split('; ')

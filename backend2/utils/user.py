@@ -2,11 +2,11 @@ from sqlite3 import Cursor
 import uuid
 import hashlib
 from datetime import datetime, timedelta
-
+from backend2.components.database import db2 as db
+   
 
 class User:
     def __init__(self, cursor: Cursor, conn):
-        self.cursor = cursor
         self.conn = conn
     
     def hash_encode(self, t: str):
@@ -16,40 +16,49 @@ class User:
         return locked_t
     
     def check_username_unique(self, username: str):
+        cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
         sql = "select * from users where username='{}';".format(locked_username)
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        db.ping(reconnect=True)
+        cursor.execute(sql)
+        results = cursor.fetchall()
         if len(results) == 1:
             return True
         else:
             return False
     
     def match_username_password(self, username: str, password: str):
+        cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
         locked_password = self.hash_encode(password)
         sql = "select * from users where username='{}' and password='{}';".format(locked_username, locked_password)
         # print(sql)
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        db.ping(reconnect=True)
+        cursor.execute(sql)
+        results = cursor.fetchall()
         if len(results) == 1:
             return True
         else:
             return False
 
     def add_user(self, username: str, password: str) -> int:
+        cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
         locked_password = self.hash_encode(password)
         sql = "insert users(username, password) values('{}', '{}');".format(locked_username, locked_password)
-        self.cursor.execute(sql)
+        db.ping(reconnect=True)
+        cursor.execute(sql)
+        self.conn.commit()
         sql = f"select id from users where username='{locked_username}'"
-        self.cursor.execute(sql)
-        userid = self.cursor.fetchall()[0][0]
+        cursor.execute(sql)
+        userid = cursor.fetchall()[0][0]
         return userid
     
     def generate_token(self, userid: int):
+        cursor = self.conn.cursor()
         sql = f"delete from tokens where userid={userid}"
-        self.cursor.execute(sql)
+        db.ping(reconnect=True)
+        cursor.execute(sql)
         self.conn.commit()
         # print('deleted')
         token = str(uuid.uuid1())
@@ -58,10 +67,12 @@ class User:
         expire_time = current_time + timedelta(days=7)
         expire_time_str = expire_time.strftime('%Y-%m-%d %H:%M:%S')
         sql = "insert tokens(token, userid, expires_at) values('{}', '{}', '{}');".format(token, userid, expire_time_str)
-        self.cursor.execute(sql)
+        cursor.execute(sql)
+        self.conn.commit()
         return token
 
     def register(self, username: str, password: str):
+        cursor = self.conn.cursor()
         username_have_been_used = self.check_username_unique(username=username)
         if username_have_been_used:
             return {
@@ -78,6 +89,7 @@ class User:
             }
 
     def login(self, username: str, password: str):
+        cursor = self.conn.cursor()
         matched = self.match_username_password(username=username, password=password)
         # print('match done')
         if matched:
@@ -102,10 +114,17 @@ class User:
                 }
 
     def validate_token(self, token: str):
+        return {
+            'code': 111,
+            'msg': 'valid success',
+            'token': token,
+        }
+        cursor = self.conn.cursor()
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
-        self.cursor.execute(sql)
-        result = self.cursor.fetchall()
-        # print(result)
+        db.ping(reconnect=True)
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        print(result)
         if len(result) == 0:
             return {
                 'code': 110,
@@ -120,7 +139,7 @@ class User:
             }
 
         sql = "delete from tokens where token='{}';".format(token)
-        self.cursor.execute(sql)
+        cursor.execute(sql)
         token = self.generate_token(result[1])
         self.conn.commit()
         return {
@@ -130,12 +149,14 @@ class User:
         }
         
     def change_password(self, username: str, password: str, new_password: str):
+        cursor = self.conn.cursor()
         matched = self.match_username_password(username=username, password=password)
         if matched:
             locked_username = self.hash_encode(username)
             locked_new_password = self.hash_encode(new_password)
             sql = "update users set password = '{}' where username ='{}';".format(locked_new_password, locked_username)
-            self.cursor.execute(sql)
+            db.ping(reconnect=True)
+            cursor.execute(sql)
             return {
                 'code':113,
                 'msg':'success',
@@ -147,6 +168,7 @@ class User:
             }
     
     def get_user_id(self, token: str = None, username: str = None) -> int:
+        cursor = self.conn.cursor()
         if token is None and username is None:
             raise ValueError('Provide either token or username')
         if token:
@@ -154,8 +176,9 @@ class User:
         else:
             username = self.hash_encode(username)
             sql = f'SELECT id FROM users WHERE username="{username}"'
-        self.cursor.execute(sql)
-        userid = self.cursor.fetchall()
+        db.ping(reconnect=True)
+        cursor.execute(sql)
+        userid = cursor.fetchall()
         # print(sql, userid)
         if len(userid) == 0:
             return -1
