@@ -3,7 +3,7 @@
 from datetime import datetime
 from flask import request
 from backend.app import db
-# from utils import get_user_id
+from utils import get_user_id
 
 
 class Operation(db.Model):
