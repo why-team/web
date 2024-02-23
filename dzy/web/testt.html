@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>动态创建无序列表</title>
+</head>
+<body>
+
+<div id="list_container"></div>
+
+
+<div id="try_text">
+
+</div>
+
+<script>
+    const try_text = document.getElementById("try_text");
+    fetch('https://jsonplaceholder.typicode.com/todos/'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id : 1})
+    }
+        .then(response => response.json())
+        .then(data => {
+            try_text.innerHTML = data;
+            console.log(data);
+        });
+</script>
+
+</body>
+</html>
