@@ -70,8 +70,8 @@ def getSearchResult():
         }
         results['articles'].append(article)
         queryed_article_ids.append(sql_article.id)
-        
-    
+
+
     nodes, vertices = graph_data.get_graph(queryed_article_ids)
     results['graphs']['node_count'] = len(nodes)
     results['graphs']['vertex_count'] = len(vertices)
@@ -79,7 +79,7 @@ def getSearchResult():
     results['graphs']['vertices'] = vertices
     
     end_time = time.time()
-    results['time'] = end_time - start_time;
+    results['time'] = end_time - start_time
     # results['log'] = log
 
     return results

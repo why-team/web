@@ -3,6 +3,7 @@
 此API会以传来的token为参数调用模型，匹配数据库中相关性最高的文章（最多不超过20篇）并返回。匹配结果包括两部分：文章信息和分类散点图信息。
 
 ### 请求格式（POST, application/json）
+
 ```json
 {
     "token": "0123456789abcdefghijklmn",        // 用户登录token
