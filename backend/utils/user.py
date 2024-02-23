@@ -2,7 +2,7 @@ from sqlite3 import Cursor
 import uuid
 import hashlib
 from datetime import datetime, timedelta
-from backend2.components.database import db2 as db
+from backend.components.database import db2 as db
    
 
 class User:

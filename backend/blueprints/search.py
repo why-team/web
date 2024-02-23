@@ -2,12 +2,12 @@ from flask import request, Blueprint
 from sqlalchemy import and_
 import time
 
-from backend2.models.article import Article
-from backend2.components.model import bm25model
-from backend2.components.database import db2 as db
-from backend2.components.graph_data import graph_data
-from backend2.utils.user import User
-from backend2.utils.preprocessor import Preprocessor
+from backend.models.article import Article
+from backend.components.model import bm25model
+from backend.components.database import db2 as db
+from backend.components.graph_data import graph_data
+from backend.utils.user import User
+from backend.utils.preprocessor import Preprocessor
 
 api_search = Blueprint('api_search', __name__, template_folder='templates')
 user = User(cursor=db.cursor(), conn=db)

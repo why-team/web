@@ -1,8 +1,8 @@
 from flask import request, Blueprint
 import sys
-from backend2.components.database import db2 as db
-from backend2.models.favorite import Favorite
-from backend2.utils.user import User
+from backend.components.database import db2 as db
+from backend.models.favorite import Favorite
+from backend.utils.user import User
 
 
 user = User(cursor=db.cursor(), conn=db)
