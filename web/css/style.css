@@ -1255,6 +1255,7 @@
 /*修改散点图样式*/
 .scatterPlot{
     margin-left: 3%;
+    margin-left: -10%;
 }
 
 
@@ -1382,6 +1383,7 @@
 
 .scatterPlot2{
     margin-left: -15%;
+    margin-left: -30%;
 }
 
 .paper-title{
