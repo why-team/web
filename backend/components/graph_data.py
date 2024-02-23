@@ -17,14 +17,14 @@ class GraphData():
             self.data[row.id] = row
 
 
-    # �����±�Ż�ȡ������ÿ�����ĸ���
+    # 从文章编号获取其属于每个类别的概率
     @staticmethod
     def _get_probs(d):    
         probs = [d['prob0'], d['prob1'], d['prob2'], d['prob3'], d['prob4'], d['prob5'], d['prob6'], d['prob7'], d['prob8'], d['prob9']]
         probs = [float(i) for i in probs]
         return probs
 
-    # �����ϵ��
+    # 求相关系数
     @staticmethod
     def calc_correlation(A, B):
         am = A - np.mean(A, axis=0, keepdims=True)
@@ -36,10 +36,10 @@ class GraphData():
         corr = float(corr)
         return corr
 
-    # �������±���б�����ȡ���¹���ͼ������
-    # ����nodes��vertices���ֱ����ͼ�ڵ��б��ͱ��б�
+    # 给定文章编号列表，获取文章关联图的数据
+    # 返回nodes和vertices，分别代表图节点列表和边列表
     def get_graph(self, article_ids: List):
-        # ��ȡ�ڵ�����
+        # 获取节点数据
         nodes = []
         for article_id in article_ids:
             article_data = self.data[article_id]
@@ -54,11 +54,10 @@ class GraphData():
             }
             nodes.append(node)
 
-        # ��ȡ������
-        # time_ = 0
+        # 获取边数据
         vertices = []
         article_count = len(article_ids)
-        # ����C(n,2)�����¶�
+        # 遍历C(n,2)个文章对
         for article_x in range(article_count):
             for article_y in range(article_x + 1, article_count):
                 # time0 = time()
@@ -66,7 +65,7 @@ class GraphData():
                 prob_y = self.probs[article_ids[article_y]]
                 # time_ += time() - time0
                 
-                # ����ƪ���µ����ϵ����Ϊ��Ȩ
+                # 求两篇文章的相关系数作为边权
                 coeff = self.calc_correlation(prob_x, prob_y)
                 if coeff < 0:
                     continue
