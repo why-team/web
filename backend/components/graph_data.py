@@ -3,7 +3,6 @@
 import pandas as pd
 import numpy as np
 from typing import List
-from time import time
 
 class GraphData():
     def __init__(self, filename='./data/lda_graph_data.csv'):
@@ -60,10 +59,8 @@ class GraphData():
         # 遍历C(n,2)个文章对
         for article_x in range(article_count):
             for article_y in range(article_x + 1, article_count):
-                # time0 = time()
                 prob_x = self.probs[article_ids[article_x]]
                 prob_y = self.probs[article_ids[article_y]]
-                # time_ += time() - time0
                 
                 # 求两篇文章的相关系数作为边权
                 coeff = self.calc_correlation(prob_x, prob_y)
