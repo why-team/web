@@ -1254,7 +1254,7 @@
 
 /*修改散点图样式*/
 .scatterPlot{
-    margin-left: 4%;
+    margin-left: 3%;
 }
 
 
@@ -1272,10 +1272,6 @@
 }
 
 .column_left {
-<<<<<<< HEAD
-    flex-basis: 20%;
-=======
->>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
     border: 1px solid white; /* 边框样式：1像素宽，黑色边框 */
     /*box-shadow: 2px 2px 4px grey;*/
     padding: 10px; /* 内边距：边框与内容之间的间距 */
@@ -1283,10 +1279,7 @@
     border-radius: 10px;
     margin-right: 15px;
     min-height: 100vh;
-<<<<<<< HEAD
-=======
     width: 700px;
->>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
 }
 
 .column_middle{
@@ -1305,11 +1298,7 @@
 /*左边列*/
 .num_years{
     text-align: center;
-<<<<<<< HEAD
-    font-size: 30px;
-=======
     font-size: 40px;
->>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
     color: #0c0c13;
     margin-top: 50px;
 }
@@ -1348,8 +1337,6 @@
     outline: none;
 }
 
-<<<<<<< HEAD
-=======
 /*词频统计区域*/
 .map{
     text-align: center;
@@ -1368,7 +1355,6 @@
 }
 
 
->>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
 .fa-search {
 /*    修改图标样式*/
     font-size: 25px;
@@ -1394,13 +1380,10 @@
     font-size: 30px;
 }
 
-<<<<<<< HEAD
-=======
 .scatterPlot2{
-    margin-left: -16%;
+    margin-left: -15%;
 }
 
->>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
 .paper-title{
     text-align: center;
     /*margin-bottom: 100px;*/

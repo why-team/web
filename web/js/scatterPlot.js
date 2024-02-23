@@ -75,6 +75,6 @@ xhr.onreadystatechange = function() {
         option && myChart.setOption(option);
     }
 };
-xhr.open("GET", "../web/data/lda_coord.csv", true);
+xhr.open("GET", "/data/lda_coord.csv", true);
 xhr.send();
 
