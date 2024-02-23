@@ -114,11 +114,6 @@ class User:
                 }
 
     def validate_token(self, token: str):
-        return {
-            'code': 111,
-            'msg': 'valid success',
-            'token': token,
-        }
         cursor = self.conn.cursor()
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
         db.ping(reconnect=True)
