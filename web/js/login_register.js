@@ -76,4 +76,10 @@ function register() {
         })
         .catch(error => console.log('error', error)
         );
+<<<<<<< HEAD
+=======
+
+    // 在这里可以添加注册逻辑，例如发送 AJAX 请求到后端
+    // console.log('Register:', user, password);
+>>>>>>> d2ba01d9818f1820c78b7d79ecd8f6a487d2c0a7
 }
