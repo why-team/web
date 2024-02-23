@@ -1,3 +1,5 @@
+# ç”¨äºç”Ÿæˆæœç´¢å›¾çš„ç»„ä»¶
+
 import pandas as pd
 import numpy as np
 from typing import List
@@ -15,14 +17,14 @@ class GraphData():
             self.data[row.id] = row
 
 
-    # ´ÓÎÄÕÂ±àºÅ»ñÈ¡ÆäÊôÓÚÃ¿¸öÀà±ğµÄ¸ÅÂÊ
+    # ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½Å»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
     @staticmethod
     def _get_probs(d):    
         probs = [d['prob0'], d['prob1'], d['prob2'], d['prob3'], d['prob4'], d['prob5'], d['prob6'], d['prob7'], d['prob8'], d['prob9']]
         probs = [float(i) for i in probs]
         return probs
 
-    # ÇóÏà¹ØÏµÊı
+    # ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
     @staticmethod
     def calc_correlation(A, B):
         am = A - np.mean(A, axis=0, keepdims=True)
@@ -34,10 +36,10 @@ class GraphData():
         corr = float(corr)
         return corr
 
-    # ¸ø¶¨ÎÄÕÂ±àºÅÁĞ±í£¬»ñÈ¡ÎÄÕÂ¹ØÁªÍ¼µÄÊı¾İ
-    # ·µ»ØnodesºÍvertices£¬·Ö±ğ´ú±íÍ¼½ÚµãÁĞ±íºÍ±ßÁĞ±í
+    # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    # ï¿½ï¿½ï¿½ï¿½nodesï¿½ï¿½verticesï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Í¼ï¿½Úµï¿½ï¿½Ğ±ï¿½ï¿½Í±ï¿½ï¿½Ğ±ï¿½
     def get_graph(self, article_ids: List):
-        # »ñÈ¡½ÚµãÊı¾İ
+        # ï¿½ï¿½È¡ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
         nodes = []
         for article_id in article_ids:
             article_data = self.data[article_id]
@@ -52,11 +54,11 @@ class GraphData():
             }
             nodes.append(node)
 
-        # »ñÈ¡±ßÊı¾İ
+        # ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         # time_ = 0
         vertices = []
         article_count = len(article_ids)
-        # ±éÀúC(n,2)¸öÎÄÕÂ¶Ô
+        # ï¿½ï¿½ï¿½ï¿½C(n,2)ï¿½ï¿½ï¿½ï¿½ï¿½Â¶ï¿½
         for article_x in range(article_count):
             for article_y in range(article_x + 1, article_count):
                 # time0 = time()
@@ -64,7 +66,7 @@ class GraphData():
                 prob_y = self.probs[article_ids[article_y]]
                 # time_ += time() - time0
                 
-                # ÇóÁ½ÆªÎÄÕÂµÄÏà¹ØÏµÊı×÷Îª±ßÈ¨
+                # ï¿½ï¿½ï¿½ï¿½Æªï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½È¨
                 coeff = self.calc_correlation(prob_x, prob_y)
                 if coeff < 0:
                     continue

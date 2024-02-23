@@ -1,4 +1,6 @@
-import pymysql;
+# 手动执行，将csv数据插入到数据库中
+
+import pymysql
 import pandas as pd
 
 conn = pymysql.connect(
@@ -44,8 +46,6 @@ for index, row in data.iterrows():
                        f'VALUES ("{title}", "{authors}", "{doi}", "{url}", "{year}", "{month}", "{abstract}", "{references}")'
     # print(sql)
     cursor.execute(sql)
-    # print(references.split(sep='; '))
-    # break
 conn.commit()
 
 conn.close()

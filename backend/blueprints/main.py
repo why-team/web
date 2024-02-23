@@ -1,3 +1,5 @@
+# 根目录API
+
 from flask import Blueprint
 
 api_main = Blueprint('api_main', __name__, template_folder='templates')

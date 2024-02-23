@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>论文搜索结果</title>
+    <title>Search Results - WHY</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -26,13 +26,18 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">-->
+    <link rel="stylesheet" href="css/animate.css">
+
+    <script src="js/echarts.js"></script>
+
+    <style>
+        .highlighted-text
+        { color: orange}
+
+    </style>
 </head>
 <body class="body">
-<!--<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">-->
-<!--    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">-->
-<!--        <span class="sr-only">Loading...</span>-->
-<!--    </div>-->
-<!--</div>-->
 <div class="container-fluid bg-primary px-5 d-none d-lg-block">
     <div class="row gx-0">
         <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
@@ -75,10 +80,9 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
                 <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="favorite.html" class="nav-item nav-link">Favorite</a>
-
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="about.html" class="nav-item nav-link">About Us</a>
+                <a href="classify.html" class="nav-item nav-link">Categories</a>
+                <a href="contact.html" class="nav-item nav-link">Contact Us</a>
             </div>
             <!--                    <a href="" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Book Now</a>-->
         </div>
@@ -97,9 +101,9 @@
                     <img src="img/sdu_logo2.jpg" class="img-fluid" alt="Image">
                     <div class="carousel-caption">
                         <div class="p-3 Middle_of_the_html paper_right" style="max-width: 900px;">
-                            <h1 class="display-2 text-capitalize text-white mb-4"> Search </h1>
-                            <p class="display-7 text-capitalize text-white mb-4" id="paper_results"></p>
-                            <p class="display-8 text-capitalize text-white mb-4"> The relevant papers are as follows:</p>
+                            <h1 class="display-2 text-capitalize text-white mb-4 animate__animated animate__bounceIn"> Search </h1>
+                            <p class="display-7 text-capitalize text-white mb-4 animate__animated animate__bounceIn animate__delay-1s" id="paper_results"></p>
+                            <p class="display-8 text-capitalize text-white mb-4 animate__animated animate__bounceIn animate__delay-2s"> The relevant papers are as follows:</p>
                         </div>
                         <div class="line_feed Middle_of_the_html paper_left">
                             <input class="query input_box  border-0 rounded-pill w-100 py-3 ps-4 pe-6 " type="text" placeholder="Search the paper again" id="query">
@@ -127,9 +131,14 @@
 
     }else{
         const token = localStorage.getItem("token")
+        console.log(token)
+        if (token === null){
+            window.location.href = "login_example.html";
+        }
         let dataToSend = new FormData();
         dataToSend.append("token", token)
         dataToSend.append("query", query)
+
 
         // 发送 POST 请求到后端
         fetch('http://49.232.169.105:8090/api/search', {
@@ -142,10 +151,12 @@
                 const total_number = data.count;
                 const datalist = data.articles;
                 const token = data.token;
+                const nodedata = data.graphs;
                 console.log(data)
 
                 localStorage.setItem("token", token)
                 createHtmlElement(total_number, datalist);
+                createScatterPlot(nodedata,datalist);
                 // createPagination(3);
 
             })
@@ -158,12 +169,17 @@
 
 <div id="results">
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-        <h5 class="section-title px-3 num_papers">Total number of papers</h5>
-        <h1 id="search_num" class="mb-0"></h1>
+        <h5 class="section-title px-3 num_papers animate__animated animate__bounceIn animate__delay-3s">Total number of papers</h5>
+        <h1 id="search_num" class="mb-0 animate__animated animate__bounceIn animate__delay-3s"></h1>
     </div>
 
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-        <h5 class="section-title px-3 num_papers">Paper specific information</h5>
+        <h5 class="section-title px-3 num_papers animate__animated animate__bounceIn animate__delay-3s">correlation diagram</h5>
+        <div id="echarts" class="animate__animated animate__bounceIn animate__delay-3s scatterPlot2" style="width: 1200px;height:800px;"></div>
+    </div>
+
+    <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+        <h5 class="section-title px-3 num_papers animate__animated animate__bounceIn animate__delay-3s">Paper specific information</h5>
     </div>
     <div class="papers_information" >
         <div class="column_left">
@@ -171,8 +187,10 @@
                 <input class="left_input" placeholder="search within topic...">
                 <button class="left_input_button"><i class="fa fa-search"></i></button>
             </label>
-            <p class="num_years">All years</p>
-            <p id="specific_years" class="specific_years"></p>
+            <p class="num_years animate__animated animate__bounceIn animate__delay-4s">All years</p>
+            <p id="specific_years" class="specific_years animate__animated animate__bounceIn animate__delay-4s"></p>
+            <p class="map animate__animated animate__bounceIn animate__delay-4s">Word frequency statistics</p>
+            <ul id="specific_words" class="specific_words animate__animated animate__bounceIn animate__delay-4s"></ul>
         </div>
         <div id="display" class="column_middle">
 
@@ -185,6 +203,7 @@
     <div class="pagination" id="pagination">
     </div>
 </div>
+<script src="js/search_result_2.js"></script>
+<script src="js/ChangeColor.js"></script>
 </body>
-<script src="js/search_result.js"></script>
 </html>

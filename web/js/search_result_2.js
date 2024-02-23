@@ -8,7 +8,6 @@ function sendData() {
     let dataToSend = new FormData();
 
     dataToSend.append("query", query);
-    // dataToSend.append("token", token);
     dataToSend.append("token", token);
 
     paper_results.innerHTML = "\"" + query + "\""
@@ -165,7 +164,7 @@ function createHtmlElement(total_number, data_list)
     var words_fre = document.getElementById("specific_words")
     for (var key in sortedDict){
         var listItem = document.createElement("li");
-        listItem.textContent = key + "——————————————" + sortedDict[key];
+        listItem.textContent = key + " (" + sortedDict[key] + " times)";
         words_fre.appendChild(listItem);
     }
 

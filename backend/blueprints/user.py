@@ -1,3 +1,5 @@
+# 用户相关API
+
 from flask import request, Blueprint
 
 from components.database import db2 as db
@@ -6,6 +8,8 @@ from utils.user import User
 api_user = Blueprint('api_user', __name__, template_folder='templates')
 
 user = User(cursor=db.cursor(), conn=db)
+
+# API：用户注册
 @api_user.route("/api/register", methods=['POST'])
 def register():
     username = str(request.form.get("username")).replace(" ","")
@@ -19,7 +23,7 @@ def register():
         db.rollback()
     return res
 
-
+# API：用户登录
 @api_user.route("/api/login", methods=['POST'])
 def login():
     username = str(request.form.get("username")).replace(" ","")
@@ -31,7 +35,7 @@ def login():
         db.rollback()
     return res
 
-
+# API：检验登录状态
 @api_user.route("/api/check_token", methods=['POST'])
 def check_token():
     token = str(request.form.get("token"))
@@ -42,7 +46,7 @@ def check_token():
         db.rollback()
     return res
 
-
+# API：修改用户密码
 @api_user.route("/api/change_password", methods=["POST"])
 def change_password():
     cursor= db.cursor()

@@ -1,3 +1,5 @@
+# Flask主程序
+
 from flask import Flask
 
 import sys
@@ -15,11 +17,13 @@ from flask_cors import CORS
 
 CORS(app, supports_credentials=True)
 
+# 加载相应组件
 from blueprints.favorites import api_favorite
 from blueprints.search import api_search
 from blueprints.main import api_main
 from blueprints.user import api_user
 
+# 将组件注册到主程序上
 app.register_blueprint(api_favorite)
 app.register_blueprint(api_search)
 app.register_blueprint(api_main)

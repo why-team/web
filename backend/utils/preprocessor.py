@@ -1,3 +1,5 @@
+# 对用户query进行预处理的实用函数
+
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
