@@ -1,3 +1,5 @@
+# 操作日志类，SQLAlchemy风格
+
 from datetime import datetime
 from flask import request
 from backend.app import db

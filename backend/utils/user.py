@@ -1,3 +1,5 @@
+# 处理用户相关信息的实用函数
+
 from sqlite3 import Cursor
 import uuid
 import hashlib
@@ -9,12 +11,14 @@ class User:
     def __init__(self, cursor: Cursor, conn):
         self.conn = conn
     
+    # 哈希函数
     def hash_encode(self, t: str):
         hash_object = hashlib.md5()
         hash_object.update(t.encode())
         locked_t = hash_object.hexdigest()
         return locked_t
     
+    # 检验用户名是否在数据库中
     def check_username_unique(self, username: str):
         cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
@@ -27,6 +31,7 @@ class User:
         else:
             return False
     
+    # 登录时匹配用户名和密码是否正确
     def match_username_password(self, username: str, password: str):
         cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
@@ -41,6 +46,7 @@ class User:
         else:
             return False
 
+    # 在数据库中添加用户
     def add_user(self, username: str, password: str) -> int:
         cursor = self.conn.cursor()
         locked_username = self.hash_encode(username)
@@ -54,6 +60,7 @@ class User:
         userid = cursor.fetchall()[0][0]
         return userid
     
+    # 用户登录时为其产生token
     def generate_token(self, userid: int):
         cursor = self.conn.cursor()
         sql = f"delete from tokens where userid={userid}"
@@ -71,6 +78,7 @@ class User:
         self.conn.commit()
         return token
 
+    # 注册用户
     def register(self, username: str, password: str):
         cursor = self.conn.cursor()
         username_have_been_used = self.check_username_unique(username=username)
@@ -88,13 +96,11 @@ class User:
                 'token':token,
             }
 
+    # 用户登录
     def login(self, username: str, password: str):
-        cursor = self.conn.cursor()
         matched = self.match_username_password(username=username, password=password)
-        # print('match done')
         if matched:
             userid = self.get_user_id(username=username)
-            # print('userid', userid)
             token = self.generate_token(userid=userid)
             return {
                     'code':100,
@@ -113,6 +119,7 @@ class User:
                     'msg':'password error'
                 }
 
+    # 检验token有效性
     def validate_token(self, token: str):
         cursor = self.conn.cursor()
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
@@ -143,6 +150,7 @@ class User:
             'token': token,
         }
 
+    # 修改密码
     def change_password(self, username: str, password: str, new_password: str):
         cursor = self.conn.cursor()
         matched = self.match_username_password(username=username, password=password)
@@ -162,6 +170,7 @@ class User:
                 'msg':'old password not correct',
             }
     
+    # 通过token或username获取用户id
     def get_user_id(self, token: str = None, username: str = None) -> int:
         cursor = self.conn.cursor()
         if token is None and username is None:

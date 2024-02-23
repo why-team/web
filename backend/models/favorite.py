@@ -1,5 +1,6 @@
-from components.database import db
+# 收藏夹类，SQLAlchemy风格
 
+from components.database import db
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)

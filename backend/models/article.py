@@ -1,3 +1,5 @@
+# 文章类，SQLAlchemy风格
+
 from typing import Union, List
 from components.database import db
 print("success")

@@ -1,3 +1,5 @@
+# 数据库相关组件
+
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
 
