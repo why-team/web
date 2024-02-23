@@ -14,14 +14,14 @@ class GraphData():
             self.probs[row.id] = probs
             self.data[row.id] = row
 
-    
+
     # 从文章编号获取其属于每个类别的概率
     @staticmethod
     def _get_probs(d):    
         probs = [d['prob0'], d['prob1'], d['prob2'], d['prob3'], d['prob4'], d['prob5'], d['prob6'], d['prob7'], d['prob8'], d['prob9']]
         probs = [float(i) for i in probs]
         return probs
-    
+
     # 求相关系数
     @staticmethod
     def calc_correlation(A, B):

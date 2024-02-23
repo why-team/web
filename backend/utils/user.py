@@ -3,7 +3,7 @@ import uuid
 import hashlib
 from datetime import datetime, timedelta
 from backend.components.database import db2 as db
-   
+
 
 class User:
     def __init__(self, cursor: Cursor, conn):
@@ -114,11 +114,6 @@ class User:
                 }
 
     def validate_token(self, token: str):
-        return {
-            'code': 111,
-            'msg': 'valid success',
-            'token': token,
-        }
         cursor = self.conn.cursor()
         sql = "select expires_at, userid from tokens where token='{}';".format(token)
         db.ping(reconnect=True)
@@ -147,7 +142,7 @@ class User:
             'msg': 'valid success',
             'token': token,
         }
-        
+
     def change_password(self, username: str, password: str, new_password: str):
         cursor = self.conn.cursor()
         matched = self.match_username_password(username=username, password=password)
